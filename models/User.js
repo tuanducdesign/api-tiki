@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 
-
 //Create table
 let UserSchema = new mongoose.Schema({
     //Data goes here
-    username : {
+    username: {
         type: String,
         required: true
     },
@@ -13,14 +12,21 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email : {
+    email: {
         type: String,
         required: true,
         unique: true
     },
     isAdmin: {type: Boolean, default: false},
-    address:{
-        type:String,    // to remember user address when checking out next time. Doesn't have to be in the sign up form
+    isSeller: {type: Boolean, default: false},
+    shopId: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Shop"
+        }
+    ],
+    address: {
+        type: String,    // to remember user address when checking out next time. Doesn't have to be in the sign up form
     },
     phoneNo: {
         type: String,  //  to remember user address when checking out next time. Doesn't have to be in the sign up form
@@ -28,4 +34,4 @@ let UserSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('User',UserSchema);
+module.exports = mongoose.model('User', UserSchema);
