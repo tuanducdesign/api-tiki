@@ -3,6 +3,7 @@ const mongoose        = require("mongoose"),
       Product      = require("./models/Product"),
       Comment         = require("./models/Comment"),
       User            = require("./models/User"),
+      Order         = require("./models/Order"),
       Review            = require("./models/Review");
 
 
@@ -649,6 +650,46 @@ async function deleteReview(review_id, productId) {
 }
 // deleteReview("5e3d2d91d60450404c642776", "5e3d2761c7f3ac3cb02a780f");
 
+
+/**=========================
+ * ORDER
+ * =========================**/
+
+async function makeOrder(userId, cart, address, phoneNo, total) {
+    let order;
+    await  User.findById(userId, async (err, user)=>{
+        user.address = address;
+        user.phoneNo = phoneNo;
+        await user.save();
+        order = new Order({
+            user: userId,
+            cart: cart,
+            address: address,
+            name: user.username,
+            phoneNo: phoneNo,
+            total: total
+        });
+        await order.save((err, result) =>{
+            if (err){
+                console.log(err);
+            }
+            console.log(`order Saved`);
+        });
+    });
+}
+
+// makeOrder("5e42743b63cb902650bef4e6", [ {quantity: "2", productPrice: "120", productTitle: "pepsi", sum: "240"}, {quantity: "1", productPrice: "100", productTitle: "coke", sum: "100"} ], "18 hoang quoc viet", "0373625279", 340);
+
+async function getOrders(userId) {
+    await Order.find({user: userId},  (err, orders)=> {
+        if(err){
+            console.log(err);
+        }
+        console.log(orders);
+    });
+}
+
+// getOrders("5e42743b63cb902650bef4e6");
 function calculateAverage(reviews) {
     if (reviews.length === 0) {
         return 0;
