@@ -1,7 +1,9 @@
 const mongoose        = require("mongoose"),
+      Shop          = require("./models/Shop"),
       Product      = require("./models/Product"),
       Comment         = require("./models/Comment"),
       User            = require("./models/User"),
+      Order         = require("./models/Order"),
       Review            = require("./models/Review");
 
 
@@ -11,37 +13,38 @@ mongoose.set("useCreateIndex", true);
 
 // CLOUDINARY
 // img upload
-let multer = require('multer');
-let storage = multer.diskStorage({
-    filename: function(req, file, callback) {
-        callback(null, Date.now() + file.originalname);
-    }
-});
-const imageFilter = function (req, file, cb) {
-    // accept image files only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return cb(new Error('Only image files are allowed!'), false);
-    }
-    cb(null, true);
-};
-const upload = multer({ storage: storage, fileFilter: imageFilter});
-
-let cloudinary = require('cloudinary');
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,//process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET // process.env.CLOUDINARY_API_SECRET
-});
+// let multer = require('multer');
+// let storage = multer.diskStorage({
+//     filename: function(req, file, callback) {
+//         callback(null, Date.now() + file.originalname);
+//     }
+// });
+// let imageFilter = function (req, file, cb) {
+//     // accept image files only
+//     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+//         return cb(new Error('Only image files are allowed!'), false);
+//     }
+//     cb(null, true);
+// };
+// let upload = multer({ storage: storage, fileFilter: imageFilter});
+//
+// let cloudinary = require('cloudinary');
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_NAME,
+//     api_key: process.env.CLOUDINARY_API_KEY,//process.env.CLOUDINARY_API_KEY,
+//     api_secret: process.env.CLOUDINARY_API_SECRET // process.env.CLOUDINARY_API_SECRET
+// });
 
 // add this middle ware to addNewProduct, updateProduct, deleteProduct
 // upload.single('image')
+
 
 // Sign up
 let req = {
     body: {
         username: "praise3",
         password: "test123",
-        email: "oketola.praise3@gmail.com",
+        email: "oketola.praise6@gmail.com",
     }
 };
 async function signUp(){
@@ -53,6 +56,9 @@ async function signUp(){
 
     if (req.body.isAdmin === true) {
         newUser.isAdmin = true;
+    }
+    if (req.body.isSeller === true) {
+        newUser.isSeller = true;
     }
 
     //find if email already exist
@@ -75,6 +81,9 @@ async function signUp(){
             }
         })
 }
+// signUp();
+
+
 // Login
 async function login(email){
     //find if email already exist
@@ -86,11 +95,135 @@ async function login(email){
         })
 }
 
-// login("oketola.praise@gmail.com");
+// login("oketola.praise6@gmail.com");
+
+/**=========================
+ * SHOP
+ * =========================**/
+async function addShop(userId, name, username){
+    let newShop = new Shop({
+        name: name,
+        author: {
+            id: userId,
+            username: username
+        }
+    });
+    await newShop.save()
+        .then(async shop =>{
+            console.log(`shop: `);
+            console.log(shop);
+            // update shopId for user
+            await User.findById(userId)
+                .then(user => {
+                    user.shopId.push(shop._id);
+                    user.save();
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err));
+
+}
+// addShop("5e42887a059ef8043c8386a8", "Praise's shop v22", "praise");
+
+async function getAllShops(){
+    //Get all shops from DB
+    Shop.find({}, (err, allproducts) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(allproducts);
+        }
+    })
+}
+// getAllShops()
+
+async function getShopById(shopId) {
+    //Get all products from DB that is in that category
+    await Shop.findById(shopId, (err, shop) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(shop);
+        }
+    })
+}
+// getShopById("5e4288921dc5343f44f23c8b");
+
+async function getShopByIdWithProductsPopulated(shopId){    // populates the products array with products instead of id
+    //Get all products from DB that is in that category
+    let shop = await Shop.findById(shopId).populate('products').exec();
+    console.log(shop);
+}
+// getShopByIdWithProductsPopulated("5e4288921dc5343f44f23c8b");
 
 
-// product
+async function deleteShop(shopId){
+    await Shop.findById(shopId, async (err, shop)=>{
+        // delete every product in the shop
+         for (let i = 0; i < shop.products.length; i++) {
+            await Product.findById(shop.products[i], async (err, product)=> {
+                if(err) {
+                    console.log(err);
+                }
+                try {
+                    // deletes all comments associated with the product
+                    await Comment.remove({"_id": {$in: Product.comments}}, async(err)=> {
+                        if (err) {
+                            console.log(err);
+                        }
+                        // deletes all reviews associated with the product
+                    await Review.remove({"_id": {$in: Product.reviews}}, function (err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    });
+                    //  delete the product
+                    await product.remove();
+                    console.log(`product deleted`);
+
+                } catch(err) {
+                    console.log(err);
+                }
+            });
+        }
+         // delete shop id from user
+        await User.findById(shop.author.id, async(err, user)=>{
+           let updatedShopId = user.shopId.filter(shop_id => shop_id != shopId);
+            user.shopId = updatedShopId;
+           await user.save()
+        });
+         // remove shop
+        await shop.remove();
+        console.log(`shop deleted`);
+    });
+}
+// deleteShop("5e4286e9de141929c8fa2187");
+
+async function updateShop(shopId, name, username, userId){
+    // find and update the correct product
+    await Shop.findById(shopId, async (err, shop)=>{
+        if(err){
+            console.log(err);
+        } else {
+            shop.name = name;
+            shop.author = {
+                id: userId,
+                    username: username
+            };
+            await shop.save();
+            console.log(shop);
+        }
+    });
+}
+// updateShop("5e427bfdb64a5b460c4b14af", "Praise's shop v3", 'praise', "5e427bc7e948424734a2aed2" );
+
+
+/**======================
+ * PRODUCTS
+ * ======================**/
 async function getAllProducts() {
+
     //Get all products from DB
     Product.find({}, (err, allproducts) => {
         if (err) {
@@ -101,6 +234,19 @@ async function getAllProducts() {
     })
 }
 // getAllProducts();
+
+async function getTopRecentProducts() {
+    //Get all products from DB
+    Product.find({}, (err, allproducts) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //
+            console.log(allproducts.slice(0, 10));
+        }
+    })
+}
+// getTopRecentProducts();
 
 async function getProductByType(category) {
     //Get all products from DB that is in that category
@@ -114,31 +260,52 @@ async function getProductByType(category) {
 }
 // getProductByType("drink");
 
-async function addNewProduct() {
+async function getProductByShopId(shopId) {
+
+    //Get all products from DB that is in that shop
+    await Product.find({shop: shopId}, (err, allproducts) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(allproducts);
+        }
+    })
+}
+// getProductByShopId("5e427bfdb64a5b460c4b14af");
+
+async function addNewProduct(shopId, userId, username) {
     let newProduct = new Product({
-        name: "Pepsi 4",
+        name: "Pepsi 3",
         price: 65.23,
         type: "drink",
         rating: 3,
         discount: 25, // in percentages,
         description: ["Smart can design for good sleep", "Especially effective in preventing reflux", "Soft and smooth pillows suitable for all babies",
         "Easy to clean and dry quickly"],
+        shop: shopId,
+        author: userId,
+        username: username
         // image: "",
         // imageId: ""
     });
     await newProduct.save()
-        .then(prod =>{
+        .then( async prod =>{
             console.log(`product: `);
             console.log(prod);
+            await Shop.findById(shopId, async (err, shop)=>{
+                if (err) console.log(err);
+                await shop.products.push(prod);
+                await shop.save();
+                console.log(shop);
+            })
     })
         .catch(err => console.log(err));
-
 }
-// addNewProduct()
+// addNewProduct("5e4288921dc5343f44f23c8b", "5e42887a059ef8043c8386a8", "praise");
 
 // add upload middleware here
 // this function includes cloudinary
-async function addNewProduct_2() {
+async function addNewProduct_2(shopId, userId, username) {
     let newProduct = new Product({
         name: "Pepsi 4",
         price: 65.23,
@@ -147,6 +314,9 @@ async function addNewProduct_2() {
         discount: 25, // in percentages,
         description: ["Smart can design for good sleep", "Especially effective in preventing reflux", "Soft and smooth pillows suitable for all babies",
             "Easy to clean and dry quickly"],
+        shop: shopId,
+        author: userId,
+        username: username
         // image: "",
         // imageId: ""
     });
@@ -160,9 +330,15 @@ async function addNewProduct_2() {
         newProduct.imageId = result.public_id;
         // save product
         await newProduct.save()
-            .then(prod =>{
+            .then( async prod =>{
                 console.log(`product: `);
                 console.log(prod);
+                await Shop.findById(shopId, async (err, shop)=>{
+                    console.log(shop);
+                    if (err) console.log(err);
+                    await shop.products.push(prod);
+                    await shop.save()
+                })
             })
             .catch(err => console.log(err));
     });
@@ -170,7 +346,7 @@ async function addNewProduct_2() {
 // addNewProduct_2()
 
 async function updateProduct(id, req) {
-    // find and update the correct campground
+    // find and update the correct product
     Product.findById(id, async (err, product)=>{
         if(err){
             console.log(err);
@@ -186,7 +362,7 @@ async function updateProduct(id, req) {
         }
     });
 }
-// updateProduct("5e3d1831ce72363e000d3c58", {
+// updateProduct("5e427ce51c53b00708a86608", {
 //     body:{
 //         name: "coke",
 //         price: 23.12,
@@ -201,7 +377,7 @@ async function updateProduct(id, req) {
 // add upload middleware here
 // update product function with cloudinary
 async function updateProduct_2(id, req) {
-    // find and update the correct campground
+    // find and update the correct product
     Product.findById(id, async (err, product)=>{
         if(err){
             console.log(err);
@@ -242,7 +418,7 @@ async function updateProduct_2(id, req) {
 // });
 
 async function deleteProduct(id) {
-    Product.findById(id, async (err, product)=> {
+    await Product.findById(id, async (err, product)=> {
         if(err) {
             console.log(err);
         }
@@ -259,16 +435,23 @@ async function deleteProduct(id) {
                     }
                 });
             });
+            await Shop.findById(product.shop, async (err, shop)=>{  // remove deleted products from shop
+               let updatedProducts = shop.products.filter(product => product != id) ;
+                shop.products = updatedProducts;
+                await shop.save()
+            });
+
             //  delete the product
-            product.remove();
+            await product.remove();
             console.log(`product deleted`);
 
         } catch(err) {
             console.log(err);
         }
     });
+
 }
-// deleteProduct("5e3d1831ce72363e000d3c58");
+// deleteProduct("5e4288c57345872d48db5db7");
 
 
 // add upload middleware here
@@ -292,6 +475,12 @@ async function deleteProduct_2(id) {
                     }
                 });
             });
+            await Shop.findById(product.shop, async (err, shop)=>{  // remove deleted products from shop
+                let updatedProducts = shop.products.filter(product => product != id) ;
+                shop.products = updatedProducts;
+                shop.save()
+            });
+
             //  delete the product
             product.remove();
             console.log(`product deleted`);
@@ -304,7 +493,9 @@ async function deleteProduct_2(id) {
 // deleteProduct("5e3d1831ce72363e000d3c58");
 
 
-// comment
+/**=========================
+ * COMMENT
+ * =========================**/
 async function getComments(productId) {
     await Product.findById(productId).populate({
         path: "comments",
@@ -368,7 +559,9 @@ async function deleteComment(comment_id) {
 }
 // deleteComment("5e3d2b0a9090410a50cca09c");
 
-// review
+/**=========================
+ * REVIEW
+ * =========================**/
 
 async function getReview(productId) {
     Product.findById(productId).populate({
@@ -404,9 +597,9 @@ async function addReview(productId, review_, userId, user) {
             product.reviews.push(review);
             // calculate the new average review for the product
             product.rating = calculateAverage(product.reviews);
-            //save campground
+            //save product
             product.save();
-            console.log(`review added succesfully`);
+            console.log(`review added successfully`);
         });
     });
 }
@@ -457,11 +650,51 @@ async function deleteReview(review_id, productId) {
 }
 // deleteReview("5e3d2d91d60450404c642776", "5e3d2761c7f3ac3cb02a780f");
 
+
+/**=========================
+ * ORDER
+ * =========================**/
+
+async function makeOrder(userId, cart, address, phoneNo, total) {
+    let order;
+    await  User.findById(userId, async (err, user)=>{
+        user.address = address;
+        user.phoneNo = phoneNo;
+        await user.save();
+        order = new Order({
+            user: userId,
+            cart: cart,
+            address: address,
+            name: user.username,
+            phoneNo: phoneNo,
+            total: total
+        });
+        await order.save((err, result) =>{
+            if (err){
+                console.log(err);
+            }
+            console.log(`order Saved`);
+        });
+    });
+}
+
+// makeOrder("5e42743b63cb902650bef4e6", [ {quantity: "2", productPrice: "120", productTitle: "pepsi", sum: "240"}, {quantity: "1", productPrice: "100", productTitle: "coke", sum: "100"} ], "18 hoang quoc viet", "0373625279", 340);
+
+async function getOrders(userId) {
+    await Order.find({user: userId},  (err, orders)=> {
+        if(err){
+            console.log(err);
+        }
+        console.log(orders);
+    });
+}
+
+// getOrders("5e42743b63cb902650bef4e6");
 function calculateAverage(reviews) {
     if (reviews.length === 0) {
         return 0;
     }
-    var sum = 0;
+    let sum = 0;
     reviews.forEach(function (element) {
         sum += element.rating;
     });
