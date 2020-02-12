@@ -1,10 +1,50 @@
 [
   {
     "_id": "5e43bbee02bb1f2c76dcf8bf",
-    "name": "Phuong's flower shop",
+    "name": "Phuong flower shop",
     "description": "A flower shop for you",
     "phone": "1234567890",
     "address": "Hanoi, Vietnam",
     "createdAt": "2020-02-12T08:48:46.842Z"
+  },
+  {
+    "_id": "5e44068f09d17e6126c0022f",
+    "name": "Toy store",
+    "description": "A toy store for kids",
+    "phone": "1234567890",
+    "address": "Ho Chi Minh, Vietnam",
+    "createdAt": "2020-02-12T14:07:11.443Z"
+  },
+  {
+    "_id": "5e4406dfe67ba2619654062e",
+    "name": "Computer store",
+    "description": "A computer hardwares store",
+    "phone": "1234567890",
+    "address": "Hai Phong, Vietnam",
+    "createdAt": "2020-02-12T14:08:31.697Z"
+  },
+  {
+    "_id": "5e44071b02892c61f7ce5c9d",
+    "name": "CD store",
+    "description": "A cd music store",
+    "phone": "1234567890",
+    "address": "Da Nang, Vietnam",
+    "createdAt": "2020-02-12T14:09:31.049Z"
+  },
+  {
+    "_id": "5e44144c4687296fe23076b7",
+    "name": "Door shop",
+    "description": "A doorshop shop for you",
+    "phone": "1234567890",
+    "address": "Hanoi, Vietnam",
+    "createdAt": "2020-02-12T15:05:48.410Z"
+  },
+  {
+    "_id": "5e44147167e8c37076e691bb",
+    "name": "Pet shop",
+    "description": "A pet shop shop for you",
+    "phone": "1234567890",
+    "address": "Hanoi, Vietnam",
+    "createdAt": "2020-02-12T15:06:25.669Z"
   }
 ]
