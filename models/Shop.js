@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 // SCHEMA SETUP
 const ShopSchema = new mongoose.Schema({
@@ -27,6 +28,12 @@ const ShopSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+// Create shop slug from the name before save
+ShopSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true, remove: /[*+~.()'"!:@]/g });
+  next();
 });
 
 module.exports = mongoose.model('Shop', ShopSchema);
