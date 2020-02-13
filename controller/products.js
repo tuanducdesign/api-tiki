@@ -8,24 +8,16 @@ const asyncHandler = require('../middleware/async');
 // @route   GET /api/v1/shops/:shopId/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res, next) => {
-  let query;
-
   if (req.params.shopId) {
-    query = Product.find({ shop: req.params.shopId });
-  } else {
-    query = Product.find().populate({
-      path: 'shop',
-      select: 'name description'
+    const products = await Product.find({ shop: req.params.shopId });
+    return res.status(200).json({
+      success: true,
+      total: products.length,
+      data: products
     });
+  } else {
+    res.status(200).json(res.advancedResults);
   }
-
-  const products = await query;
-
-  res.status(200).json({
-    success: true,
-    total: products.length,
-    data: products
-  });
 });
 
 // @desc    Get single product

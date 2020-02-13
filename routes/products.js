@@ -7,9 +7,18 @@ const {
   deleteProduct
 } = require('../controller/products');
 
+const advancedResults = require('../middleware/advancedResults');
+const Product = require('../models/Product');
+
 router
   .route('/')
-  .get(getProducts)
+  .get(
+    advancedResults(Product, {
+      path: 'shop',
+      select: 'name description'
+    }),
+    getProducts
+  )
   .post(addProduct);
 
 router

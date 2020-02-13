@@ -8,6 +8,9 @@ const {
   deleteShop
 } = require('../controller/shops');
 
+const advancedResults = require('../middleware/advancedResults');
+const Shop = require('../models/Shop');
+
 // Include other resource routers
 const productRouter = require('./products');
 // Reroute into other resoure routers
@@ -15,7 +18,7 @@ router.use('/:shopId/products', productRouter);
 
 router
   .route('/')
-  .get(getShops)
+  .get(advancedResults(Shop, 'products'), getShops)
   .post(createShop);
 
 router
