@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 // SCHEMA SETUP
 const ProductSchema = new mongoose.Schema({
@@ -11,7 +12,20 @@ const ProductSchema = new mongoose.Schema({
   category: {
     type: [String],
     required: [true, 'Please choose a category'],
-    enum: ['phone-tablet', 'electronics', 'accessories', 'cameras-lens', 'tools-crafts', 'toys-baby', 'beauty', 'sports', 'vehicles', 'international-goods', 'books-gifts', 'voucher' ]
+    enum: [
+      'phone-tablet',
+      'electronics',
+      'accessories',
+      'cameras-lens',
+      'tools-crafts',
+      'toys-baby',
+      'beauty',
+      'sports',
+      'vehicles',
+      'international-goods',
+      'books-gifts',
+      'voucher'
+    ]
   },
   price: {
     type: Number,
@@ -66,6 +80,12 @@ const ProductSchema = new mongoose.Schema({
     ref: 'Shop',
     required: true
   }
+});
+
+// Create product slug from the name before save
+ProductSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true, remove: /[*+~.()'"!:@]/g });
+  next();
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
