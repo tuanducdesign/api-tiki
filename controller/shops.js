@@ -16,9 +16,12 @@ const getShops = asyncHandler(async (req, res, next) => {
   let queryString = JSON.stringify(reqQuery);
 
   // Add $ to query string --> it become mongodb query
-  queryString = queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+  queryString = queryString.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    match => `$${match}`
+  );
 
-  let query = Shop.find(JSON.parse(queryString));
+  let query = Shop.find(JSON.parse(queryString)).populate('products');
 
   // Select query
   if (req.query.select) {
@@ -123,11 +126,13 @@ const updateShop = asyncHandler(async (req, res, next) => {
 // @route   DELETE /api/v1/shops/:id
 // @access  Private
 const deleteShop = asyncHandler(async (req, res, next) => {
-  const shop = await Shop.findByIdAndDelete(req.params.id);
+  const shop = await Shop.findById(req.params.id);
 
   if (!shop) {
     next(new ErrorResponse(`Shop not found with id ${req.params.id}`, 404));
   }
+
+  shop.remove();
 
   res.status(200).json({
     success: true,

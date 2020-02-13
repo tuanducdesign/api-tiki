@@ -8,6 +8,11 @@ const {
   deleteShop
 } = require('../controller/shops');
 
+// Include other resource routers
+const productRouter = require('./products');
+// Reroute into other resoure routers
+router.use('/:shopId/products', productRouter);
+
 router
   .route('/')
   .get(getShops)

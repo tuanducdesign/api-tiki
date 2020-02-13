@@ -1,7 +1,7 @@
 [
   {
     "name": "HyperX Pulsefire Raid – Gaming Mouse",
-    "category": "accessories",
+    "category": ["accessories", "books-gifts"],
     "price": "59.99",
     "description": "11 Programmable Buttons, RGB, Ergonomic Design, Comfortable Side Grips, Software-Controlled Customization",
     "dimension": "11 x 5.2 x 11 inches",
@@ -10,7 +10,8 @@
     "branch": "HyperX",
     "origin": "US",
     "discount": 10,
-    "color": ["Black&Red", "Blacka&Green", "Black&Blue"],
+    "colors": ["Black&Red", "Blacka&Green", "Black&Blue"],
+    "averageRating": 4,
     "shop": "5e4406dfe67ba2619654062e"
   },
   {
@@ -24,7 +25,8 @@
     "branch": "LEGO",
     "origin": "FR",
     "discount": 50,
-    "color": ["Black&Yellow", "Yellow&Green"],
+    "colors": ["Black&Yellow", "Yellow&Green"],
+    "averageRating": 5,
     "shop": "5e44068f09d17e6126c0022f"
   },
   {
@@ -37,7 +39,8 @@
     "specs": "Item model number: 6251511, ASIN: B07CNVQGV7",
     "branch": "LYLYFAN",
     "origin": "JP",
-    "color": ["White", "Pink", "Red"],
+    "colors": ["White", "Pink", "Red"],
+    "averageRating": 4,
     "shop": "5e43bbee02bb1f2c76dcf8bf"
   },
   {
@@ -50,7 +53,8 @@
     "specs": "ASIN: B00BAGTNAQ, Item model number: 2323445",
     "branch": "ChomChom Roller",
     "origin": "UK",
-    "color": ["White", "Black", "Blue"],
+    "colors": ["White", "Black", "Blue"],
+    "averageRating": 3,
     "shop": "5e44147167e8c37076e691bb"
   }
 ]
