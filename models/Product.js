@@ -1,56 +1,71 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 // SCHEMA SETUP
-let productSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    price: {
-        type:Number,
-        required: true
-    },
-    type: {
-        type:String,
-        required: true
-    },
-    rating: {
-        type: Number,
-        default: 0
-    },
-    discount: Number,
-    image: String,
-    imageId: String,    // for deleting in cloudinary
-    description: [
-        {
-            type: String
-        }
-    ],
-    comments: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Comment"
-        }
-    ],
-    reviews: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Review"
-        }
-    ],
-    shop: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Shop"
-    },
-    author:{
-        id:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username: String
-    }
-}, {
-    // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
-    timestamps: true
+const ProductSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true,
+    required: [true, 'Plase add a product name']
+  },
+  slug: String,
+  category: {
+    type: [String],
+    required: [true, 'Please choose a category'],
+    enum: ['phone-tablet', 'electronics', 'accessories', 'cameras-lens', 'tools-crafts', 'toys-baby', 'beauty', 'sports', 'vehicles', 'international-goods', 'books-gifts', 'voucher' ]
+  },
+  price: {
+    type: Number,
+    required: [true, 'Please add a price'],
+    min: [0, 'Price cannot be lower than 0']
+  },
+  description: {
+    type: String,
+    required: [true, 'Please add a description']
+  },
+  dimensions: String,
+  weight: String,
+  specs: {
+    type: String,
+    required: [true, 'Please add a specs information']
+  },
+  branch: {
+    type: String,
+    required: [true, 'Please add a branch']
+  },
+  origin: {
+    type: String,
+    required: [true, 'Please add a origin (country)']
+  },
+  discount: {
+    type: Number,
+    max: [100, 'Discount cannot be higher than 100%'],
+    min: [0, 'Discount cannot be lower than 0%']
+  },
+  colors: {
+    type: [String]
+  },
+  photo: {
+    type: String,
+    default: 'no-photo.jpg'
+  },
+  averageRating: {
+    type: Number,
+    min: [1, 'Rating must be at least 1'],
+    max: [5, 'Rating cannot be higher than 5']
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  soldQuantity: {
+    type: Number,
+    min: [0, 'Quantity cannot be lower than 0']
+  },
+  shop: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Shop',
+    required: true
+  }
 });
-let Product = mongoose.model("Product", productSchema);
-module.exports = Product;
+
+module.exports = mongoose.model('Product', ProductSchema);
