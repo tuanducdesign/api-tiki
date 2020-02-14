@@ -10,6 +10,8 @@ const {
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
+const { protect } = require('../middleware/auth');
+
 router
   .route('/')
   .get(
@@ -19,12 +21,12 @@ router
     }),
     getProducts
   )
-  .post(addProduct);
+  .post(protect, addProduct);
 
 router
   .route('/:id')
   .get(getProduct)
-  .put(updateProduct)
-  .delete(deleteProduct);
+  .put(protect, updateProduct)
+  .delete(protect, deleteProduct);
 
 module.exports = router;

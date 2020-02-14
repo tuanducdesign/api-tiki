@@ -32,6 +32,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     maxlength: [15, 'Phone number cannot be longer than 15 characters']
   },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other']
+  },
+  dob: {
+    type: Date
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
