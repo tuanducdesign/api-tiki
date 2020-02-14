@@ -21,8 +21,10 @@ process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;
 // Mount router
 const shops = require('./routes/shops');
 const products = require('./routes/products');
+const auth = require('./routes/auth');
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/products', products);
+app.use('/api/v1/auth', auth);
 
 // Error handler middleware
 app.use(errorHandler);
