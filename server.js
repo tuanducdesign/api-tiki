@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
+const cookieParser = require('cookie-parser');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -14,6 +15,9 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // Morgan middleware
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;
