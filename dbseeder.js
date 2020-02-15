@@ -25,12 +25,16 @@ const shops = JSON.parse(
 const products = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/products.json`, 'utf-8')
 );
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/products.json`, 'utf-8')
+);
 
 // Import data
 const importData = async () => {
   try {
     await Shop.create(shops);
     await Product.create(products);
+    await User.create(users);
     console.log('Data imported successfully!');
     process.exit();
   } catch (err) {

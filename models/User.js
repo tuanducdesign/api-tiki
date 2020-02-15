@@ -39,6 +39,7 @@ const UserSchema = new mongoose.Schema({
   dob: {
     type: Date
   },
+  age: Number,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
@@ -51,6 +52,12 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function(next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Calculate age
+UserSchema.pre('save', async function(next) {
+  const years = parseInt((Date.now() - this.dob) / (1000 * 3600 * 24 * 365.25));
+  this.age = years;
 });
 
 // Sign JWT token and return the token
