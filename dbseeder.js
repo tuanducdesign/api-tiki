@@ -26,7 +26,7 @@ const products = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/products.json`, 'utf-8')
 );
 const users = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/products.json`, 'utf-8')
+  fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
 );
 
 // Import data

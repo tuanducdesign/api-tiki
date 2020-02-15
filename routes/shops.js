@@ -11,7 +11,7 @@ const {
 const advancedResults = require('../middleware/advancedResults');
 const Shop = require('../models/Shop');
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 // Include other resource routers
 const productRouter = require('./products');
@@ -21,12 +21,12 @@ router.use('/:shopId/products', productRouter);
 router
   .route('/')
   .get(advancedResults(Shop, 'products'), getShops)
-  .post(protect, createShop);
+  .post(protect, authorize('seller', 'admin'), createShop);
 
 router
   .route('/:id')
   .get(getShop)
-  .put(protect, updateShop)
-  .delete(protect, deleteShop);
+  .put(protect, authorize('seller', 'admin'), updateShop)
+  .delete(protect, authorize('seller', 'admin'), deleteShop);
 
 module.exports = router;

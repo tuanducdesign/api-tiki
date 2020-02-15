@@ -10,7 +10,7 @@ const {
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 router
   .route('/')
@@ -21,12 +21,12 @@ router
     }),
     getProducts
   )
-  .post(protect, addProduct);
+  .post(protect, authorize('seller', 'admin'), addProduct);
 
 router
   .route('/:id')
   .get(getProduct)
-  .put(protect, updateProduct)
-  .delete(protect, deleteProduct);
+  .put(protect, authorize('seller', 'admin'), updateProduct)
+  .delete(protect, authorize('seller', 'admin'), deleteProduct);
 
 module.exports = router;
