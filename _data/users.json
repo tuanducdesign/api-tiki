@@ -3,8 +3,8 @@
     "_id": "5e478dc845ebc028fa7f2395",
     "name": "Phuong Minh",
     "email": "phuong1@gmail.com",
-    "password": "phuong1",
-    "role": "user",
+    "password": "123456",
+    "role": "seller",
     "gender": "male",
     "dob": "1999-02-16"
   },
@@ -12,7 +12,7 @@
     "_id": "5e4799e34768833202cb9904",
     "name": "John Doe",
     "email": "johndoe@gmail.com",
-    "password": "johndoe",
+    "password": "123456",
     "role": "user",
     "gender": "male",
     "dob": "1995-06-11"
@@ -31,14 +31,14 @@
     "name": "Jane Doe",
     "email": "janedoe@gmail.com",
     "password": "123456",
-    "role": "seller",
+    "role": "user",
     "gender": "female",
     "dob": "2002-03-11"
   },
   {
     "_id": "5e479b23df94eb34c43a0ca8",
-    "name": "Seller",
-    "email": "seller@gmail.com",
+    "name": "Seller1",
+    "email": "seller1@gmail.com",
     "password": "123456",
     "role": "seller",
     "gender": "female",

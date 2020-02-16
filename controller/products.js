@@ -46,12 +46,23 @@ const getProduct = asyncHandler(async (req, res, next) => {
 // @access  Private
 const addProduct = asyncHandler(async (req, res, next) => {
   req.body.shop = req.params.shopId;
+  req.body.user = req.user.id;
 
   const shop = await Shop.findById(req.params.shopId);
 
   if (!shop) {
     return next(
       new ErrorResponse(`No shop found with id of ${req.params.shopId}`, 404)
+    );
+  }
+
+  // Make sure that the owner is correct
+  if (shop.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} cannot add product to this shop ${shop._id}`,
+        401
+      )
     );
   }
 
@@ -75,6 +86,16 @@ const updateProduct = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure that the owner is correct
+  if (product.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} cannot update product to this shop ${product._id}`,
+        401
+      )
+    );
+  }
+
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
@@ -95,6 +116,16 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
   if (!product) {
     return next(
       new ErrorResponse(`No product found with id ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure that the owner is correct
+  if (product.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} cannot update product to this shop ${product._id}`,
+        401
+      )
     );
   }
 
