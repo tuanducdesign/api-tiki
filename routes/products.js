@@ -12,12 +12,17 @@ const Product = require('../models/Product');
 
 const { protect, authorize } = require('../middleware/auth');
 
+// Include other resource routers
+const reviewRouter = require('./reviews');
+// Reroute into other resoure routers
+router.use('/:productId/reviews', reviewRouter);
+
 router
   .route('/')
   .get(
     advancedResults(Product, {
       path: 'shop',
-      select: 'name description'
+      select: 'name'
     }),
     getProducts
   )

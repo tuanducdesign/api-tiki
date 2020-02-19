@@ -1,41 +1,36 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-let reviewSchema = new mongoose.Schema({
-    rating: {
-        // Setting the field type
-        type: Number,
-        // Making the star rating required
-        required: "Please provide a rating (1-5 stars).",
-        // Defining min and max values
-        min: 1,
-        max: 5,
-        // Adding validation to see if the entry is an integer
-        validate: {
-            // validator accepts a function definition which it uses for validation
-            validator: Number.isInteger,
-            message: "{VALUE} is not an integer value."
-        }
-    },
-    // review text
-    text: {
-        type: String
-    },
-    // author id and username fields
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username: String
-    },
-    // product associated with the review
-    product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product"
-    }
-}, {
-    // if timestamps are set to true, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
-    timestamps: true
+const ReviewSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    trim: true,
+    required: [true, 'Please add a title for the review'],
+    maxlength: [100, 'Title cannot be longer than 100 characters']
+  },
+  text: {
+    type: String,
+    required: [true, 'Please add some text']
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  product: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true
+  }
 });
 
-module.exports = mongoose.model("Review", reviewSchema);
+module.exports = mongoose.model('Review', ReviewSchema);
