@@ -52,7 +52,7 @@ ReviewSchema.statics.getAverageRating = async function(productId) {
 
   try {
     await this.model('Product').findByIdAndUpdate(productId, {
-      averageRating: obj[0].averageRating
+      averageRating: Math.ceil(obj[0].averageRating)
     });
   } catch (error) {
     console.error(error);
@@ -67,6 +67,7 @@ ReviewSchema.post('save', function() {
 // Call getAverageCost after remove a review
 ReviewSchema.pre('remove', function() {
   this.constructor.getAverageReview(this.product);
+  console.log('Hello run in remove middleware');
 });
 
 module.exports = mongoose.model('Review', ReviewSchema);
