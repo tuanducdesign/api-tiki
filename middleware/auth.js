@@ -11,11 +11,12 @@ const protect = asyncHandler(async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
+    // set token via Bearer token in header
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.token) {
+    // set token via cookie
+    token = req.cookies.token;
   }
-  // else if (req.cookies.token) {
-  //   token = req.cookies.token;
-  // }
 
   // Make sure token is sent
   if (!token) {
@@ -39,10 +40,7 @@ const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new ErrorResponse(
-          `The ${req.user.role} cannot access this route`,
-          403
-        )
+        new ErrorResponse(`The ${req.user.role} cannot access this route`, 403)
       );
     }
     next();
