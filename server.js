@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -18,6 +21,19 @@ app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
+
+// Rate limit 100 requests per 10 mins
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
+app.use(limiter);
+
+// Prevent http params polution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Morgan middleware
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;
