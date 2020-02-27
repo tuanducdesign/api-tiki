@@ -1,0 +1,15 @@
+[
+  {
+    "cart": [
+      {
+        "product": "5e48f8970bedbc0e99c44f02",
+        "quantity": 2,
+        "shop": "5e4406dfe67ba2619654062e"
+      }
+    ],
+    "address": "Hanoi",
+    "phone": "123456789",
+    "total": 10000,
+    "user": "5e4799e34768833202cb9904"
+  }
+]

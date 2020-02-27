@@ -15,8 +15,10 @@ const { protect, authorize } = require('../middleware/auth');
 
 // Include other resource routers
 const productRouter = require('./products');
+const orderRouter = require('./orders');
 // Reroute into other resoure routers
 router.use('/:shopId/products', productRouter);
+router.use('/:shopId/orders', orderRouter);
 
 router
   .route('/')

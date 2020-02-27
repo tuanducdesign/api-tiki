@@ -10,6 +10,7 @@ const Shop = require('./models/Shop');
 const Product = require('./models/Product');
 const User = require('./models/User');
 const Review = require('./models/Review');
+const Order = require('./models/Order');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URL, {
@@ -32,6 +33,9 @@ const users = JSON.parse(
 const reviews = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8')
 );
+const orders = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/orders.json`, 'utf-8')
+);
 
 // Import data
 const importData = async () => {
@@ -40,6 +44,7 @@ const importData = async () => {
     await Product.create(products);
     await User.create(users);
     await Review.create(reviews);
+    await Order.create(orders);
     console.log('Data imported successfully!');
     process.exit();
   } catch (err) {
@@ -54,6 +59,7 @@ const deleteData = async () => {
     await Product.deleteMany();
     await User.deleteMany();
     await Review.deleteMany();
+    await Order.deleteMany();
     console.log('Data deleted successfully!');
     process.exit();
   } catch (err) {
