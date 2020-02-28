@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const OrderSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.ObjectId,
-    ref: "Product"
+    ref: "Product",
+    required: true
   },
   shop: {
     type: mongoose.Schema.ObjectId,
-    ref: "Shop"
+    ref: "Shop",
+    required: true
   },
   quantity: Number,
   address: { 
@@ -36,9 +38,6 @@ const OrderSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   }
-}, {
-  toJSON: {virtuals: true},
-  toObject: {virtuals: true}
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
