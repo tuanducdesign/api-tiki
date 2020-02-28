@@ -10,15 +10,13 @@ const asyncHandler = require('../middleware/async');
 // @access  Private/ Admin
 const getOrders = asyncHandler(async (req, res, next) => {
   if (req.params.shopId) {
-    const orders = await Order.find({ 'cart.shop': req.params.shopId });
-    // return res.status(200).json({
-    //   success: true,
-    //   total: orders.length,
-    //   data: orders
-    // });
+    let orders = await Order.find({ shop : req.params.shopId });
+    
     return res.status(200).json({
-      data: "hello"
-    })
+      success: true,
+      total: orders.length,
+      data: orders
+    });
   } else {
     res.status(200).json(res.advancedResults);
   }

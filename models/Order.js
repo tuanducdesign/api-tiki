@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-  cart: [{
-    product: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Product"
-    },
-    quantity: Number,
-    shop: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Shop"
-    }
-  }],
+  product: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Product"
+  },
+  shop: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Shop"
+  },
+  quantity: Number,
   address: { 
     type: String, 
     required: [true, 'Please add an address'] 
