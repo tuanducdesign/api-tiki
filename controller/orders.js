@@ -7,7 +7,7 @@ const asyncHandler = require('../middleware/async');
 // @desc    Get all orders
 // @route   GET /api/v1/orders
 // @route   GET /api/v1/shops/:shopId/orders
-// @access  Private/ Seller - Admin
+// @access  Public
 const getOrders = asyncHandler(async (req, res, next) => {
   if (req.params.shopId) {
     let orders = await Order.find({ shop: req.params.shopId });
@@ -43,7 +43,85 @@ const getOrder = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc    Add order
+// @route   POST /api/v1/checkout
+// @access  Private
+const addOrder = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id;
+
+  const product = await Product.findById(req.body.product);
+
+  if (!product) {
+    return next(
+      new ErrorResponse(`No product with id ${req.params.productId}`, 404)
+    );
+  }
+
+  const order = await Order.create(req.body);
+
+  res.status(201).json({
+    success: true,
+    data: order
+  });
+});
+
+// @desc    Update order
+// @route   PUT /api/v1/orders/:id
+// @access  Private/ User - Admin
+const updateOrder = asyncHandler(async (req, res, next) => {
+  let order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(
+      new ErrorResponse(`No review found with id ${req.params.id}`, 404)
+    );
+  }
+
+  // Check ownership of the order
+  if (order.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(new ErrorResponse(`This user cannot update this order`, 401));
+  }
+
+  order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: order
+  });
+});
+
+// @desc    Delete order
+// @route   DELETE /api/v1/orders/:id
+// @access  Private
+const deleteOrder = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(
+      new ErrorResponse(`No order found with id ${req.params.id}`, 404)
+    );
+  }
+
+  // Check ownership of the order
+  if (order.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(new ErrorResponse(`This user cannot delete this order`, 401));
+  }
+
+  await order.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
+});
+
 module.exports = {
   getOrders,
-  getOrder
+  getOrder,
+  addOrder,
+  updateOrder,
+  deleteOrder
 };

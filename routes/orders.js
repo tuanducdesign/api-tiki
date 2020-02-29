@@ -1,8 +1,16 @@
 const router = require('express').Router({ mergeParams: true });
-const { getOrders, getOrder } = require('../controller/orders');
+const {
+  getOrders,
+  getOrder,
+  addOrder,
+  updateOrder,
+  deleteOrder
+} = require('../controller/orders');
 
 const advancedResults = require('../middleware/advancedResults');
 const Order = require('../models/Order');
+
+const { protect, authorize } = require('../middleware/auth');
 
 router.route('/').get(
   advancedResults(Order, {
@@ -12,6 +20,12 @@ router.route('/').get(
   getOrders
 );
 
-router.route('/:id').get(getOrder);
+router
+  .route('/:id')
+  .get(getOrder)
+  .put(protect, authorize('user', 'admin'), updateOrder)
+  .delete(protect, authorize('user', 'admin'), deleteOrder);
+
+router.route('/checkout').post(protect, authorize('user', 'admin'), addOrder);
 
 module.exports = router;
