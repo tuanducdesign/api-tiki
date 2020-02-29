@@ -1,7 +1,7 @@
 {
   "name": "tiki-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for Tiki-Clone project",
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server",
