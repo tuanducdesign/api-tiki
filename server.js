@@ -7,6 +7,9 @@ const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -21,6 +24,15 @@ app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
+
+// sanitize middleware to prevent NoSQL injection
+app.use(mongoSanitize());
+
+// set security headers
+app.use(helmet());
+
+// prevent xss attacks
+app.use(xss());
 
 // Rate limit 100 requests per 10 mins
 const limiter = rateLimit({
