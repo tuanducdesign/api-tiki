@@ -6,6 +6,18 @@
 </h3>
 </p>
 
+# Update (29/02/2020):
+- Docker image:
+``` $ docker pull phuongminh2303/tiki-api ```
+- Todo: 
+- [ ] Goole OAuth2
+- [ ] Image Upload
+- [x] Containerize API
+- [ ] Caching with Redis
+- [ ] Server and Load Balancer
+- [ ] Update Order model and controller for updating orders
+- [ ] Statistics routes for admins
+
 ## Shop:
 
 -   List all products in a shop
