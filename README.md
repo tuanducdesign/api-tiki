@@ -14,9 +14,12 @@
 - [ ] Image Upload
 - [x] Containerize API
 - [ ] Caching with Redis
-- [ ] Server and Load Balancer
+- [X] ~~Server~~ --> Add reverse proxy Nginx and Load Balancer
 - [ ] Update Order model and controller for updating orders
 - [ ] Statistics routes for admins
+
+## Documentation link (01/03/2020):
+- Postman docs (95% finished): https://documenter.getpostman.com/view/9718206/SzKN2hcs
 
 ## Shop:
 
