@@ -4,7 +4,8 @@ const {
   getProduct,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  productPhotoUpload
 } = require('../controller/products');
 
 const advancedResults = require('../middleware/advancedResults');
@@ -33,5 +34,7 @@ router
   .get(getProduct)
   .put(protect, authorize('seller', 'admin'), updateProduct)
   .delete(protect, authorize('seller', 'admin'), deleteProduct);
+
+router.route('/:id/photo').put(productPhotoUpload);
 
 module.exports = router;

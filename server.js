@@ -10,6 +10,8 @@ const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const fileupload = require('express-fileupload');
+const path = require('path');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -46,6 +48,12 @@ app.use(hpp());
 
 // Enable CORS
 app.use(cors());
+
+// File upload 
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Morgan middleware
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;

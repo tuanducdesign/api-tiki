@@ -2,6 +2,7 @@ const Product = require('../models/Product');
 const Shop = require('../models/Shop');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const path = require('path');
 
 // @desc    Get all products
 // @route   GET /api/v1/products
@@ -137,10 +138,58 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc    Upload photo for product
+// @route   PUT /api/v1/products/:id/photo
+// @access  Private
+const productPhotoUpload = asyncHandler(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return res.status(400).json({ success: false });
+  }
+
+  if (!req.files) {
+    return next(new ErrorResponse(`Please upload an image file`, 400));
+  }
+
+  const file = req.files.file;
+
+  // Make sure the image is a photo
+  if (!file.mimetype.startsWith('image')) {
+    return next(
+      new ErrorResponse(`The file is not an image, please check again!`, 404)
+    );
+  }
+
+  // Check file size
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new ErrorResponse(`The file size is too large, please check again!`, 404)
+    );
+  }
+
+  // Change the name of the photo so that it is not duplicated
+  file.name = `photo_${product._id}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
+    if (err) {
+      console.error(err);
+      return next(new ErrorResponse(`Problem with file upload`, 500));
+    }
+    await Product.findByIdAndUpdate(req.params.id, { photo: file.name });
+
+    res.status(200).json({
+      success: true,
+      data: file.name
+    });
+  });
+});
+
 module.exports = {
   getProducts,
   getProduct,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  productPhotoUpload
 };
