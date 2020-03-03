@@ -37,9 +37,11 @@ app.use(helmet());
 app.use(xss());
 
 // Rate limit 100 requests per 10 mins
+let limit;
+process.env.NODE_ENV === 'development' ? limit = 500 : limit = 100;
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: 100
+  max: limit
 });
 app.use(limiter);
 
