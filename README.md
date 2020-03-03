@@ -11,10 +11,10 @@
 ``` $ docker pull phuongminh2303/tiki-api ```
 - Todo: 
 - [ ] Goole OAuth2
-- [ ] Image Upload
+- [x] Image Upload
 - [x] Containerize API
 - [ ] Caching with Redis
-- [X] ~~Server~~ --> Add reverse proxy Nginx and Load Balancer
+- [X] ~~Server~~ --> ~~Add reverse proxy Nginx~~ and Load Balancer (maybe in the future)
 - [ ] Update Order model and controller for updating orders
 - [ ] Statistics routes for admins
 
