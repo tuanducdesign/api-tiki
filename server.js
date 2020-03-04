@@ -37,13 +37,13 @@ app.use(helmet());
 app.use(xss());
 
 // Rate limit 100 requests per 10 mins
-let limit;
-process.env.NODE_ENV === 'development' ? limit = 500 : limit = 100;
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: limit
+  max: 100
 });
-app.use(limiter);
+if (process.env.NODE_ENV === 'production') {
+  app.use(limiter);
+}
 
 // Prevent http params polution
 app.use(hpp());
@@ -51,7 +51,7 @@ app.use(hpp());
 // Enable CORS
 app.use(cors());
 
-// File upload 
+// File upload
 app.use(fileupload());
 
 // Set static folder
@@ -72,7 +72,7 @@ app.use('/api/v1/products', products);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
-app.use('/api/v1/orders', orders)
+app.use('/api/v1/orders', orders);
 
 // Error handler middleware
 app.use(errorHandler);

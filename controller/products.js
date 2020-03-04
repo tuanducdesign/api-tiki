@@ -148,6 +148,14 @@ const productPhotoUpload = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ success: false });
   }
 
+  // Make sure user is shop owner
+  if (product.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(`User ${req.params.id} cannot update this product`),
+      401
+    );
+  }
+
   if (!req.files) {
     return next(new ErrorResponse(`Please upload an image file`, 400));
   }
@@ -164,7 +172,7 @@ const productPhotoUpload = asyncHandler(async (req, res, next) => {
   // Check file size
   if (file.size > process.env.MAX_FILE_UPLOAD) {
     return next(
-      new ErrorResponse(`The file size is too large, please check again!`, 404)
+      new ErrorResponse(`The file size cannot be larger than 1MB!`, 404)
     );
   }
 

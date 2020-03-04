@@ -43,7 +43,7 @@ const getReview = asyncHandler(async (req, res, next) => {
 
 // @desc    Add review
 // @route   POST /api/v1/products/:productId/reviews
-// @access  Private
+// @access  Private. One user can create only 1 review
 const addReview = asyncHandler(async (req, res, next) => {
   req.body.product = req.params.productId;
   req.body.user = req.user.id;

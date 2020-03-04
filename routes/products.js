@@ -35,6 +35,8 @@ router
   .put(protect, authorize('seller', 'admin'), updateProduct)
   .delete(protect, authorize('seller', 'admin'), deleteProduct);
 
-router.route('/:id/photo').put(productPhotoUpload);
+router
+  .route('/:id/photo')
+  .put(protect, authorize('seller', 'admin'), productPhotoUpload);
 
 module.exports = router;
