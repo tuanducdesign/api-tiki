@@ -115,7 +115,8 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     await sendMail({
       email: user.email,
       subject: 'Password reset token',
-      message
+      message,
+      url: resetUrl
     });
 
     return res.status(200).json({
