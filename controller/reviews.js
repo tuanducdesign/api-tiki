@@ -9,7 +9,10 @@ const asyncHandler = require('../middleware/async');
 // @access  Public
 const getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.productId) {
-    const reviews = await Review.find({ product: req.params.productId });
+    const reviews = await Review.find({ product: req.params.productId }).populate({
+      path: 'user',
+      select: 'name'
+    });
     return res.status(200).json({
       success: true,
       total: reviews.length,
