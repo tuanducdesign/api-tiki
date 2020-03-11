@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = 'Duplicated field value in body';
+    const message = `Field value(s) in body duplicated:${err.errmsg.split(':')[2]}`;
     error = new ErrorResponse(message, 400);
   }
 

@@ -59,12 +59,12 @@ ReviewSchema.statics.getAverageRating = async function(productId) {
   }
 };
 
-// Call getAverageCost after save a new review
+// Call getAverageRating after save a new review
 ReviewSchema.post('save', function() {
   this.constructor.getAverageRating(this.product);
 });
 
-// Call getAverageCost after remove a review
+// Call getAverageRating after remove a review
 ReviewSchema.pre('remove', function() {
   this.constructor.getAverageReview(this.product);
   console.log('Hello run in remove middleware');
