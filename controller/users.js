@@ -40,6 +40,12 @@ const updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id).select('+password');
 
   user.password = req.body.newPassword;
+  user.name = req.body.newName;
+  user.role = req.body.newRole;
+  user.address = req.body.newAddress;
+  user.phone = req.body.newPhone;
+  user.gender = req.body.newGender;
+  user.dob = req.body.newDob;
 
   await user.save();
 
