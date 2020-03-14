@@ -67,12 +67,14 @@ const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reviews = require('./routes/reviews');
 const orders = require('./routes/orders');
+const stats = require('./routes/stats');
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/products', products);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/orders', orders);
+app.use('/api/v1/stats', stats);
 
 // Error handler middleware
 app.use(errorHandler);
