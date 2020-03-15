@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const mongoose = require('mongoose');
 
 // @desc    Get top sold product
 // @route   GET /api/v1/stats
@@ -20,7 +21,7 @@ const getTopSoldProduct = asyncHandler(async (req, res, next) => {
       {
         $group: {
           _id: '$product',
-          'soldQuantity': { $sum: '$quantity' }
+          soldQuantity: { $sum: '$quantity' }
         }
       },
       { $sort: { soldQuantity: -1 } },
@@ -42,9 +43,41 @@ const getTopSoldProduct = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    total: limit,
+    total: result.length,
     data: result
   });
 });
 
-module.exports = { getTopSoldProduct };
+// @desc    Get top sold product
+// @route   GET /api/v1/stats
+// @access  Private/Admin
+const getTopSoldOfShop = asyncHandler(async (req, res, next) => {
+  const shopId = req.params.shopId;
+  const limit = parseInt(req.query.limit || 5);
+
+  let result = await Order.aggregate([
+    { $match: { shop: mongoose.Types.ObjectId(shopId) } },
+    {
+      $group: {
+        _id: '$product',
+        product: { $first: '$product' },
+        soldQuantity: { $sum: '$quantity' }
+      }
+    },
+    { $sort: { soldQuantity: -1 } },
+    { $limit: limit }
+  ]);
+
+  await Product.populate(result, {
+    path: 'product',
+    select: 'name'
+  });
+
+  res.status(200).json({
+    success: true,
+    total: result.length,
+    data: result
+  });
+});
+
+module.exports = { getTopSoldProduct, getTopSoldOfShop };
