@@ -22,6 +22,35 @@ const getOrders = asyncHandler(async (req, res, next) => {
   }
 });
 
+// @desc    Get all orders of an user
+// @route   GET /api/v1/auth/:userId/orders
+// @access  Private: User-Admin
+const getUserOrders = asyncHandler(async (req, res, next) => {
+  const limit = parseInt(req.query.limit) || 5;
+  const sortBy = req.query.sort || 'createdAt';
+
+  let orders = await Order.find({ user: req.params.userId })
+    .populate({
+      path: 'product shop',
+      select: 'name'
+    })
+    .sort('-' + sortBy)
+    .limit(limit);
+
+  req.body.user = req.user.id;
+
+  // Allow user to get his/her history only
+  if (req.params.userId !== req.user.id && req.user.role !== 'admin') {
+    return next(new ErrorResponse(`Not allow to get history of other user`, 401));
+  }
+
+  return res.status(200).json({
+    success: true,
+    total: orders.length,
+    data: orders
+  });
+});
+
 // @desc    Get single order
 // @route   GET /api/v1/orders/:id
 // @access  Public
@@ -120,6 +149,7 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   getOrders,
+  getUserOrders,
   getOrder,
   addOrder,
   updateOrder,

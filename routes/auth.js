@@ -12,6 +12,11 @@ const {
 
 const { protect } = require('../middleware/auth');
 
+// Include other resource routers
+const orderRouter = require('./orders');
+// Reroute into other resoure routers
+router.use('/:userId', orderRouter);
+
 router.post('/register', register);
 router.post('/login', login);
 router.get('/me', protect, getMe);

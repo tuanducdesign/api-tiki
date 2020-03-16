@@ -1,6 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const {
   getOrders,
+  getUserOrders,
   getOrder,
   addOrder,
   updateOrder,
@@ -19,6 +20,8 @@ router.route('/').get(
   }),
   getOrders
 );
+
+router.route('/history').get(protect, authorize('user', 'admin'), getUserOrders);
 
 router
   .route('/:id')
