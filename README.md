@@ -16,9 +16,10 @@
 - [ ] Caching with Redis
 - [X] ~~Server~~ --> ~~Add reverse proxy Nginx~~ and Load Balancer (maybe in the future)
 - [ ] Update Order model and controller for updating orders
-- [ ] Statistics routes for admins
+- [X] Statistics routes for admins
 - [ ] Add payment method for user
 - [ ] Allow user login at one device at one time
+- [ ] Add GET all order of a single user
 
 ## Documentation link (01/03/2020):
 - Postman docs (95% finished): https://documenter.getpostman.com/view/9718206/SzKN2hcs
