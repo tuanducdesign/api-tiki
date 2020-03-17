@@ -25,6 +25,10 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Please add total price']
     },
+    paymentMethod: {
+      type: String,
+      default: 'COD'
+    },
     currentState: {
       type: String,
       required: true,
