@@ -15,9 +15,9 @@
 - [x] Containerize API
 - [ ] Caching with Redis
 - [X] ~~Server~~ --> ~~Add reverse proxy Nginx~~ and Load Balancer (maybe in the future)
-- [ ] Update Order model and controller for updating orders
+- [X] ~~Update Order model and controller for updating orders~~ (not necessary)
 - [X] Statistics routes for admins (15/03/2020)
-- [ ] Add payment method for user
+- [X] Add payment method for user (16/03/2020)
 - [ ] Allow user login at one device at one time
 - [X] Add GET all order of a single user (16/03/2020)
 
