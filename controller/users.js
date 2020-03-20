@@ -39,7 +39,7 @@ const createUser = asyncHandler(async (req, res, next) => {
 const updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id).select('+password');
 
-  user.password = req.body.newPassword;
+  user.password = req.body.newPassword || user.password;
   user.name = req.body.newName;
   user.role = req.body.newRole;
   user.address = req.body.newAddress;

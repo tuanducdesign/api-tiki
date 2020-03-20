@@ -15,7 +15,7 @@ const { protect } = require('../middleware/auth');
 // Include other resource routers
 const orderRouter = require('./orders');
 // Reroute into other resoure routers
-router.use('/:userId', orderRouter);
+router.use('/:userId/orders', orderRouter);
 
 router.post('/register', register);
 router.post('/login', login);
