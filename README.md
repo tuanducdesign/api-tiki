@@ -10,7 +10,7 @@
 - Docker image:
 ``` $ docker pull phuongminh2303/tiki-api ```
 - Todo: 
-- [ ] Goole OAuth2
+- [X] ~~Goole OAuth2~~ (failed because Google change their policy in October 2019) (20/03/2020)
 - [x] Image Upload
 - [x] Containerize API
 - [ ] Caching with Redis
