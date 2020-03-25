@@ -56,6 +56,7 @@ app.use(fileupload());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(process.env.images_dir));
 
 // Morgan middleware
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;
