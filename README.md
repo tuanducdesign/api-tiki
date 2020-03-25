@@ -10,10 +10,10 @@
 - Docker image:
 ``` $ docker pull phuongminh2303/tiki-api ```
 - Todo: 
-- [ ] Goole OAuth2
+- [X] ~~Goole OAuth2~~ (failed because Google change their policy in October 2019) (20/03/2020)
 - [x] Image Upload
 - [x] Containerize API
-- [ ] Caching with Redis
+- [X] Caching with Redis (it works but for some reason, it's quite slow 23/3/2020) 
 - [X] ~~Server~~ --> ~~Add reverse proxy Nginx~~ and Load Balancer (maybe in the future)
 - [X] ~~Update Order model and controller for updating orders~~ (not necessary)
 - [X] Statistics routes for admins (15/03/2020)
