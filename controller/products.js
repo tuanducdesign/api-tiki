@@ -3,6 +3,10 @@ const Shop = require('../models/Shop');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const path = require('path');
+const url = require('url');
+const redis = require('redis');
+
+const redis_client = redis.createClient(6379);
 
 // @desc    Get all products
 // @route   GET /api/v1/products
@@ -10,13 +14,26 @@ const path = require('path');
 // @access  Public
 const getProducts = asyncHandler(async (req, res, next) => {
   if (req.params.shopId) {
-    const products = await Product.find({ shop: req.params.shopId });
+    const { shopId } = req.params;
+    const products = await Product.find({ shop: shopId });
+
+    redis_client.setex(
+      `products_shop:${shopId}`,
+      3600,
+      JSON.stringify(products)
+    );
     return res.status(200).json({
       success: true,
       total: products.length,
       data: products
     });
   } else {
+    const getUrl = url.parse(req.url, true).href;
+    redis_client.setex(
+      `products:${getUrl}`,
+      3600,
+      JSON.stringify(res.advancedResults)
+    );
     res.status(200).json(res.advancedResults);
   }
 });
