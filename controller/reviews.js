@@ -2,25 +2,39 @@ const Review = require('../models/Review');
 const Product = require('../models/Product');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const redis = require('redis');
+
+const redis_client = redis.createClient(6379);
 
 // @desc    Get all reviews
 // @route   GET /api/v1/reviews
 // @route   GET /api/v1/products/:productId/reviews
 // @access  Public
 const getReviews = asyncHandler(async (req, res, next) => {
-  if (req.params.productId) {
-    const reviews = await Review.find({ product: req.params.productId }).populate({
-      path: 'user',
-      select: 'name'
-    });
-    return res.status(200).json({
-      success: true,
-      total: reviews.length,
-      data: reviews
-    });
-  } else {
-    return res.status(200).json(res.advancedResults);
-  }
+  return res.status(200).json(res.advancedResults);
+});
+
+// @desc    Get all reviews of a product
+// @route   GET /api/v1/products/:productId/reviews
+// @access  Public
+const getProductReviews = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+  const reviews = await Review.find({ product: productId }).populate({
+    path: 'user',
+    select: 'name'
+  });
+
+  redis_client.setex(
+    `reviews_product:${productId}`,
+    3600,
+    JSON.stringify(reviews)
+  );
+
+  return res.status(200).json({
+    success: true,
+    total: reviews.length,
+    data: reviews
+  });
 });
 
 // @desc    Get single review
@@ -122,6 +136,7 @@ const deleteReview = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   getReviews,
+  getProductReviews,
   getReview,
   addReview,
   updateReview,

@@ -71,9 +71,31 @@ const checkCachedSingleProduct = (req, res, next) => {
   });
 };
 
+const checkCachedProductReview = (req, res, next) => {
+  const {productId} = req.params;
+
+  redis_client.get(`reviews_product:${productId}`, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+
+    if (data != null) {
+      data = JSON.parse(data);
+      res.status(200).json({
+        success: true,
+        source: 'Redis. Is this faster???',
+        data
+      });
+    } else {
+      next();
+    }
+  });
+}
 
 module.exports = {
   checkCachedShopProducts,
   checkCachedAllProducts,
-  checkCachedSingleProduct
+  checkCachedSingleProduct,
+  checkCachedProductReview
 };

@@ -8,16 +8,22 @@ const {
   productPhotoUpload
 } = require('../controller/products');
 
+const { getProductReviews } = require('../controller/reviews');
+
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
 const { protect, authorize } = require('../middleware/auth');
-const { checkCachedAllProducts, checkCachedSingleProduct } = require('../middleware/redisProducts');
+const {
+  checkCachedAllProducts,
+  checkCachedSingleProduct,
+  checkCachedProductReview
+} = require('../middleware/redisProducts');
 
 // Include other resource routers
 const reviewRouter = require('./reviews');
 // Reroute into other resoure routers
-router.use('/:productId/reviews', reviewRouter);
+// router.use('/:productId/reviews', reviewRouter);
 
 router
   .route('/')
@@ -30,6 +36,10 @@ router
     getProducts
   )
   .post(protect, authorize('seller', 'admin'), addProduct);
+
+router
+  .route('/:productId/reviews')
+  .get(checkCachedProductReview, getProductReviews);
 
 router
   .route('/:id')
