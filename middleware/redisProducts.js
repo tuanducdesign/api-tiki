@@ -4,32 +4,26 @@ const url = require('url');
 const redis_client = redis.createClient(6379);
 
 const checkCachedShopProducts = (req, res, next) => {
-  if (req.params.shopId) {
-    const { shopId } = req.params;
+  const { shopId } = req.params;
 
-    redis_client.get(`products_shop:${shopId}`, (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-      }
+  redis_client.get(`products_shop:${shopId}`, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
 
-      if (data != null) {
-        data = JSON.parse(data);
-        res.status(200).json({
-          success: true,
-          source: 'Redis. Is this faster???',
-          total: data.length,
-          data
-        });
-      } else {
-        console.log(1);
-        next();
-      }
-    });
-  } else {
-    console.log(2);
-    next();
-  }
+    if (data != null) {
+      data = JSON.parse(data);
+      res.status(200).json({
+        success: true,
+        source: 'Redis. Is this faster???',
+        total: data.length,
+        data
+      });
+    } else {
+      next();
+    }
+  });
 };
 
 const checkCachedAllProducts = (req, res, next) => {
@@ -55,4 +49,31 @@ const checkCachedAllProducts = (req, res, next) => {
   });
 };
 
-module.exports = { checkCachedShopProducts, checkCachedAllProducts };
+const checkCachedSingleProduct = (req, res, next) => {
+  const { id } = req.params;
+
+  redis_client.get(`productId:${id}`, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+
+    if (data != null) {
+      data = JSON.parse(data);
+      res.status(200).json({
+        success: true,
+        source: 'Redis. Is this faster???',
+        data
+      });
+    } else {
+      next();
+    }
+  });
+};
+
+
+module.exports = {
+  checkCachedShopProducts,
+  checkCachedAllProducts,
+  checkCachedSingleProduct
+};

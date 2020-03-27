@@ -10,32 +10,30 @@ const redis_client = redis.createClient(6379);
 
 // @desc    Get all products
 // @route   GET /api/v1/products
-// @route   GET /api/v1/shops/:shopId/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res, next) => {
-  if (req.params.shopId) {
-    const { shopId } = req.params;
-    const products = await Product.find({ shop: shopId });
+  const getUrl = url.parse(req.url, true).href;
+  redis_client.setex(
+    `products:${getUrl}`,
+    3600,
+    JSON.stringify(res.advancedResults)
+  );
+  res.status(200).json(res.advancedResults);
+});
 
-    redis_client.setex(
-      `products_shop:${shopId}`,
-      3600,
-      JSON.stringify(products)
-    );
-    return res.status(200).json({
-      success: true,
-      total: products.length,
-      data: products
-    });
-  } else {
-    const getUrl = url.parse(req.url, true).href;
-    redis_client.setex(
-      `products:${getUrl}`,
-      3600,
-      JSON.stringify(res.advancedResults)
-    );
-    res.status(200).json(res.advancedResults);
-  }
+// @desc    Get all products
+// @route   GET /api/v1/shops/:shopId/products
+// @access  Public
+const getProductsOfShops = asyncHandler(async (req, res, next) => {
+  const { shopId } = req.params;
+  const products = await Product.find({ shop: shopId });
+
+  redis_client.setex(`products_shop:${shopId}`, 3600, JSON.stringify(products));
+  return res.status(200).json({
+    success: true,
+    total: products.length,
+    data: products
+  });
 });
 
 // @desc    Get single product
@@ -52,6 +50,12 @@ const getProduct = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`No product found with the id ${req.params.id}`, 404)
     );
   }
+
+  redis_client.setex(
+    `productId:${req.params.id}`,
+    3600,
+    JSON.stringify(product)
+  );
 
   res.status(200).json({
     success: true,
@@ -212,6 +216,7 @@ const productPhotoUpload = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   getProducts,
+  getProductsOfShops,
   getProduct,
   addProduct,
   updateProduct,

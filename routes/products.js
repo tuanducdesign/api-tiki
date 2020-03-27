@@ -12,7 +12,7 @@ const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
 const { protect, authorize } = require('../middleware/auth');
-const { checkCachedShopProducts, checkCachedAllProducts } = require('../middleware/redisProducts');
+const { checkCachedAllProducts, checkCachedSingleProduct } = require('../middleware/redisProducts');
 
 // Include other resource routers
 const reviewRouter = require('./reviews');
@@ -22,7 +22,6 @@ router.use('/:productId/reviews', reviewRouter);
 router
   .route('/')
   .get(
-    checkCachedShopProducts,
     checkCachedAllProducts,
     advancedResults(Product, {
       path: 'shop',
@@ -34,7 +33,7 @@ router
 
 router
   .route('/:id')
-  .get(getProduct)
+  .get(checkCachedSingleProduct, getProduct)
   .put(protect, authorize('seller', 'admin'), updateProduct)
   .delete(protect, authorize('seller', 'admin'), deleteProduct);
 
