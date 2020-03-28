@@ -1,0 +1,236 @@
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}      
+  \usecolortheme{beaver} 
+  \usefonttheme{serif} 
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage{xcolor}
+\usepackage{listings}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\setbeamertemplate{itemize items}[circle]
+\lstset
+{
+    language=[LaTeX]TeX,
+    breaklines=true,
+    basicstyle=\tt\scriptsize,
+    keywordstyle=\color{blue},
+    identifierstyle=\color{magenta},
+}
+
+
+\title[Tiki clone]{Web Application Development}
+\author{Group 2}
+\subtitle{Project presentation: Tiki clone}
+\institute{ICT dept/USTH}
+\date{March 28, 2020}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Motivation}
+	Vietnames Ecommerce Statistics here
+\end{frame}
+
+\begin{frame}{Why Tiki-clone ?}
+	\begin{itemize}
+  		\item Tiki.vn is a popular and favorite commercial website in Vietnam.
+  		\item Tiki's system architecture is complicated.
+  		\begin{itemize}
+			\item Most of the time, they can handle a huge amount of requests in their server.
+			\item They can scale both horizontally and vertically very fast
+			\item They use modern technologies/frameworks: ReactJS for example.
+		\end{itemize}
+  		\item Tiki only supports Vietnamese. But Tiki-clone version will support English.
+	\end{itemize}
+\end{frame}
+
+\section{System Architecture}
+
+\begin{frame}{Use case design and analysis}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.3]{images/usecase.png}
+    \caption{Use case diagram}
+    \label{fig:usecase}
+\end{figure}
+\end{frame}
+
+\begin{frame}{System architecture design}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.3]{images/usecase.png}
+    \caption{System architecture}
+    \label{fig:sysarch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Role-based access control design}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.3]{images/usecase.png}
+    \caption{Role-based access control}
+    \label{fig:sysarch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Database design}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.3]{images/usecase.png}
+    \caption{Role-based access control}
+    \label{fig:sysarch}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Tools and frameworks}
+    \begin{columns}
+    \linespread{1.0}
+    \begin{column}{5cm}
+        \textbf{Front-end:}
+        \begin{itemize}
+            \item ReactJS with Redux
+            \item Material UI
+        \end{itemize}
+        \textbf{Back-end: }
+        \begin{itemize}
+            \item NodeJS with Express
+            \item MongoDB Atlas
+            \item Redis
+        \end{itemize}
+        \textbf{Server: }
+        \begin{itemize}
+            \item Google Cloud CE
+            \item Nginx
+            \item Docker (A little bit)
+        \end{itemize}
+    \end{column}
+    \begin{column}{5cm}
+
+    \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Code Implementation}
+	
+\begin{frame}{Code Implementation}
+Sample ReactJS and Redux "Login" implementation
+\end{frame}
+
+\begin{frame}{Code Implementation}
+Mongoose schema implementation
+Sample get all product route + controller
+\end{frame}
+
+\begin{frame}[fragile]{Server-side caching and Load balancing}
+\begin{itemize}
+    \item Sample redis implemenation + keys + response time result
+    \item Nginx configuration file
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Security}
+\begin{itemize}
+	\item	Encrypt user's passwords and tokens
+	\item	Protect against NoSQL injections
+	\item	Use helmet package to prevent cross site scripting (XSS)
+	\item	Add rate limit (100 requests/ 10 mins) (maybe change later)
+	\item	Prevent HTTP param polution
+	\item	Public the API with CORS
+	\end{itemize}
+\end{frame}
+
+\section{Results and Discussion}
+
+\begin{frame}{Results}
+	\begin{itemize}
+    	\item Tiki-clone web-based application
+    	\begin{itemize}
+    	    \item Single web page application
+    	    \item Responsive with all devices!
+    	\end{itemize}
+    	\pause
+    	\item Well constructed JSON-based API and documentations
+    	\begin{itemize}
+    	    \item Scalable
+    	    \item Quite security (at the moment)
+    	\end{itemize}
+    	\pause
+        \item Web server architecture that can handle multiple requests
+        \item Finish all use cases in the design part
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Result images here}
+    Images here
+\end{frame} 
+    
+\begin{frame}[fragile]
+\frametitle{Difficulties}
+    \begin{itemize}
+    	\item Interrupted class timetable and schedule due to the disease
+    	\item Medium/low technical skills with tools and frameworks
+        \item Free tier Google Cloud server is not strong enough
+        \item Bad team management from the leader
+	\end{itemize}
+\end{frame}    
+
+\begin{frame}[fragile]
+\frametitle{Future improvements}
+    \begin{itemize}
+    	\item Refactor code using SOLID/DRY technique
+    	\item Improve system architecture: 
+    	    \begin{itemize}
+    	        \item Add more WS and LB
+    	        \item Transfer to microservices
+    	        \item Containerize the system
+    	    \end{itemize}
+        \item Add domain name and encrypt SSL
+        \item Resolve our issues that are noted in Github repos
+	\end{itemize}
+\end{frame}
+
+\section{Demo and resources}
+	
+\begin{frame}{Demo and resources}
+	\begin{itemize}
+	    \item Tiki-clone on Heroku: \url{heroku app link}
+	    \item Front-end repository: \url{https://github.com/phuongminh2303/Tiki-Clone}
+	    \item Back-end repository: \url{https://github.com/phuongminh2303/Tiki-Clone-API}
+	    \item API documentation: \url{https://documenter.getpostman.com/view/9718206/SzKN2hcs}
+	\end{itemize}
+\end{frame}
+
+\end{document}
