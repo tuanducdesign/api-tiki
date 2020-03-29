@@ -15,7 +15,7 @@ const getProducts = asyncHandler(async (req, res, next) => {
   const getUrl = url.parse(req.url, true).href;
   redis_client.setex(
     `products:${getUrl}`,
-    3600,
+    process.env.CACHE_EXPIRE,
     JSON.stringify(res.advancedResults)
   );
   res.status(200).json(res.advancedResults);
@@ -28,7 +28,7 @@ const getProductsOfShops = asyncHandler(async (req, res, next) => {
   const { shopId } = req.params;
   const products = await Product.find({ shop: shopId });
 
-  redis_client.setex(`products_shop:${shopId}`, 3600, JSON.stringify(products));
+  redis_client.setex(`products_shop:${shopId}`, process.env.CACHE_EXPIRE, JSON.stringify(products));
   return res.status(200).json({
     success: true,
     total: products.length,
@@ -53,7 +53,7 @@ const getProduct = asyncHandler(async (req, res, next) => {
 
   redis_client.setex(
     `productId:${req.params.id}`,
-    3600,
+    process.env.CACHE_EXPIRE,
     JSON.stringify(product)
   );
 
