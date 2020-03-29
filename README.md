@@ -22,7 +22,7 @@
 - [X] Add GET all order of a single user (16/03/2020)
 
 ## Documentation link (01/03/2020):
-- Postman docs (95% finished): https://documenter.getpostman.com/view/9718206/SzKN2hcs
+- Postman docs (99% finished): https://documenter.getpostman.com/view/9718206/SzKN2hcs
 
 ## Shop:
 
