@@ -23,7 +23,7 @@ const {
 // Include other resource routers
 const reviewRouter = require('./reviews');
 // Reroute into other resoure routers
-router.use('/:productId/reviews', reviewRouter);
+// router.use('/:productId/reviews', reviewRouter);
 
 router
   .route('/')
@@ -37,9 +37,9 @@ router
   )
   .post(protect, authorize('seller', 'admin'), addProduct);
 
-// router
-//   .route('/:productId/reviews')
-//   .get(checkCachedProductReview, getProductReviews);
+router
+  .route('/:productId/reviews')
+  .get(getProductReviews);
 
 router
   .route('/:id')
