@@ -12,16 +12,13 @@ const advancedResults = require('../middleware/advancedResults');
 
 const { protect, authorize } = require('../middleware/auth');
 
-router
-  .route('/')
-  .get(
-    advancedResults(Review, {
-      path: 'product',
-      select: 'name'
-    }),
-    getReviews
-  )
-  .post(protect, authorize('user', 'admin'), addReview);
+router.route('/').get(
+  advancedResults(Review, {
+    path: 'product',
+    select: 'name'
+  }),
+  getReviews
+);
 
 router
   .route('/:id')

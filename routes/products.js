@@ -8,7 +8,7 @@ const {
   productPhotoUpload
 } = require('../controller/products');
 
-const { getProductReviews } = require('../controller/reviews');
+const { getProductReviews, addReview } = require('../controller/reviews');
 
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
@@ -39,7 +39,8 @@ router
 
 router
   .route('/:productId/reviews')
-  .get(getProductReviews);
+  .get(getProductReviews)
+  .post(protect, authorize('user', 'admin'), addReview);
 
 router
   .route('/:id')
