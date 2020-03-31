@@ -31,7 +31,6 @@
     identifierstyle=\color{magenta},
 }
 
-
 \title[Tiki clone]{Web Application Development}
 \author{Group 2}
 \subtitle{Project presentation: Tiki clone}
@@ -60,10 +59,6 @@
 \section{Introduction}
 
 \begin{frame}{Motivation}
-	Vietnames Ecommerce Statistics here
-\end{frame}
-
-\begin{frame}{Why Tiki-clone ?}
 	\begin{itemize}
   		\item Tiki.vn is a popular and favorite commercial website in Vietnam.
   		\item Tiki's system architecture is complicated.
@@ -81,7 +76,7 @@
 \begin{frame}{Use case design and analysis}
 \begin{figure}[htp]
     \centering
-    \includegraphics[scale=0.3]{images/usecase.png}
+    \includegraphics[scale=0.35]{images/usecase.png}
     \caption{Use case diagram}
     \label{fig:usecase}
 \end{figure}
@@ -90,7 +85,7 @@
 \begin{frame}{System architecture design}
 \begin{figure}[htp]
     \centering
-    \includegraphics[scale=0.3]{images/usecase.png}
+    \includegraphics[scale=0.2]{images/usecase.png}
     \caption{System architecture}
     \label{fig:sysarch}
 \end{figure}
@@ -99,7 +94,7 @@
 \begin{frame}{Role-based access control design}
 \begin{figure}[htp]
     \centering
-    \includegraphics[scale=0.3]{images/usecase.png}
+    \includegraphics[scale=0.4]{images/rolebase.png}
     \caption{Role-based access control}
     \label{fig:sysarch}
 \end{figure}
@@ -108,7 +103,7 @@
 \begin{frame}{Database design}
 \begin{figure}[htp]
     \centering
-    \includegraphics[scale=0.3]{images/usecase.png}
+    \includegraphics[scale=0.38]{images/database_diagram.png}
     \caption{Role-based access control}
     \label{fig:sysarch}
 \end{figure}
@@ -117,6 +112,7 @@
 \begin{frame}{Tools and frameworks}
     \begin{columns}
     \linespread{1.0}
+    \hspace{-1cm}
     \begin{column}{5cm}
         \textbf{Front-end:}
         \begin{itemize}
@@ -136,8 +132,10 @@
             \item Docker (A little bit)
         \end{itemize}
     \end{column}
+    
+    \hspace{-1cm}
     \begin{column}{5cm}
-
+        \includegraphics[scale=0.43]{images/techstack.png}  
     \end{column}
     \end{columns}
 \end{frame}
@@ -148,15 +146,47 @@
 Sample ReactJS and Redux "Login" implementation
 \end{frame}
 
-\begin{frame}{Code Implementation}
-Mongoose schema implementation
-Sample get all product route + controller
+\begin{frame}{Code Implementation: Schema implementation}
+    \begin{columns}
+    \hspace{-0.5cm}
+    \vspace{-2cm}
+    \begin{column}{4cm}
+    \textbf{Each model has:}
+    \begin{itemize}
+        \item Model schema
+        \item Middlewares
+    \end{itemize}
+    \end{column}
+    
+    \begin{column}{6cm}
+    \includegraphics[scale=0.45]{images/schema.png}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Code Implementation: 3-layers architecture}
+\begin{columns}
+    \linespread{1.0}
+    \hspace{-1cm}
+     \begin{column}{5cm}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[scale=0.5]{images/3_layer_architecture.png}
+            \caption{3-layers architecture in NodeJS with Express}
+            \label{fig:sysarch}
+        \end{figure}  
+    \end{column}
+    \hspace{-1cm}
+    \begin{column}{5cm}
+        \includegraphics[scale=0.5]{images/3layerscode.png}
+    \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]{Server-side caching and Load balancing}
 \begin{itemize}
     \item Sample redis implemenation + keys + response time result
-    \item Nginx configuration file
+    \item Nginx config file
 \end{itemize}
 \end{frame}
 
@@ -180,13 +210,11 @@ Sample get all product route + controller
     	    \item Single web page application
     	    \item Responsive with all devices!
     	\end{itemize}
-    	\pause
     	\item Well constructed JSON-based API and documentations
     	\begin{itemize}
     	    \item Scalable
     	    \item Quite security (at the moment)
     	\end{itemize}
-    	\pause
         \item Web server architecture that can handle multiple requests
         \item Finish all use cases in the design part
 	\end{itemize}
@@ -198,7 +226,7 @@ Sample get all product route + controller
 \end{frame} 
     
 \begin{frame}[fragile]
-\frametitle{Difficulties}
+\frametitle{Difficulties and problems}
     \begin{itemize}
     	\item Interrupted class timetable and schedule due to the disease
     	\item Medium/low technical skills with tools and frameworks
@@ -214,10 +242,12 @@ Sample get all product route + controller
     	\item Improve system architecture: 
     	    \begin{itemize}
     	        \item Add more WS and LB
+    	        \item Implement Distributed filesystem
     	        \item Transfer to microservices
     	        \item Containerize the system
     	    \end{itemize}
         \item Add domain name and encrypt SSL
+        \item Implement CD/CI 
         \item Resolve our issues that are noted in Github repos
 	\end{itemize}
 \end{frame}
