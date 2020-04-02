@@ -184,10 +184,33 @@ Sample ReactJS and Redux "Login" implementation
 \end{frame}
 
 \begin{frame}[fragile]{Server-side caching and Load balancing}
-\begin{itemize}
-    \item Sample redis implemenation + keys + response time result
-    \item Nginx config file
-\end{itemize}
+\begin{columns}
+    \hspace{-2cm}
+     \begin{column}{6cm}
+        \linespread{1.3}
+        \begin{itemize}
+             \item Cahing
+            \begin{itemize}
+                \item Redis-cli v4.0.9
+                \item Cache \textbf{GET} query only
+                \item Implemented as middlewares
+                \item Result: (no-cache vs cache)
+                \includegraphics[scale=0.5]{images/no-cache.png}
+                \includegraphics[scale=0.5]{images/with-cache.png}
+            \end{itemize}
+            \item Load balancing:
+            \begin{itemize}
+                \item Nginx v1.17.0
+                \item \textbf{ip-hash} algorithm
+            \end{itemize}
+        \end{itemize}  
+    \end{column}
+    \hspace{-1.5cm}
+    \begin{column}{4cm}
+        \includegraphics[scale=0.5]{images/cache_strategy.png}
+    \end{column}
+    \end{columns}
+
 \end{frame}
 
 \begin{frame}[fragile]{Security}
@@ -208,7 +231,7 @@ Sample ReactJS and Redux "Login" implementation
     	\item Tiki-clone web-based application
     	\begin{itemize}
     	    \item Single web page application
-    	    \item Responsive with all devices!
+    	    \item Responsive with pc screen and tablet!
     	\end{itemize}
     	\item Well constructed JSON-based API and documentations
     	\begin{itemize}
@@ -238,8 +261,9 @@ Sample ReactJS and Redux "Login" implementation
 \begin{frame}[fragile]
 \frametitle{Future improvements}
     \begin{itemize}
-    	\item Refactor code using SOLID/DRY technique
-    	\item Improve system architecture: 
+    	\item Add Google/Facebook/Zalo OAuth 2.0
+    	\item Implement slug string for better url
+    	\item Server: 
     	    \begin{itemize}
     	        \item Add more WS and LB
     	        \item Implement Distributed filesystem
@@ -252,15 +276,27 @@ Sample ReactJS and Redux "Login" implementation
 	\end{itemize}
 \end{frame}
 
-\section{Demo and resources}
-	
-\begin{frame}{Demo and resources}
-	\begin{itemize}
-	    \item Tiki-clone on Heroku: \url{heroku app link}
+\section{Demo and Q\&A}
+
+\begin{frame}{Demo and Q\&A}
+    \begin{itemize}
+	    \item Tiki-clone on Heroku: 
+	    \url{heroku app link}
 	    \item Front-end repository: \url{https://github.com/phuongminh2303/Tiki-Clone}
 	    \item Back-end repository: \url{https://github.com/phuongminh2303/Tiki-Clone-API}
 	    \item API documentation: \url{https://documenter.getpostman.com/view/9718206/SzKN2hcs}
 	\end{itemize}
 \end{frame}
-
+	
+\begin{frame}{Thank you for listening!}
+    \textbf{Group 2:}
+    \begin{itemize}
+        \item Dinh Nhu Minh Phuong - BI8-141
+        \item Praise Oketola - BI8-137
+        \item Truong Quoc Khanh - BI8-
+        \item Nguyen Trong Son - BI8-
+        \item Nguyen Huu Chi Dat - BI8-
+        \item Pham Viet Minh Duc - BI8-
+    \end{itemize}
+\end{frame}
 \end{document}
