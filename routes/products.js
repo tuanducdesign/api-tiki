@@ -34,8 +34,7 @@ router
       select: 'name'
     }),
     getProducts
-  )
-  .post(protect, authorize('seller', 'admin'), addProduct);
+  );
 
 router
   .route('/:productId/reviews')

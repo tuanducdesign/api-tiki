@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 // @route   GET /api/v1/stats
 // @access  Private/Admin
 const getTopSoldProduct = asyncHandler(async (req, res, next) => {
+  console.log("Hello from getTopSoldProduct");
   const limit = parseInt(req.query.limit || 5);
   let result;
 
@@ -34,13 +35,19 @@ const getTopSoldProduct = asyncHandler(async (req, res, next) => {
     select: 'name',
     populate: { path: 'shop', model: 'Shop', select: 'name' }
   });
+  console.log("hello again 1!");
+  console.log(result);
 
   result.forEach(item => {
-    item.name = item._id.name;
-    item.shop = item._id.shop.name;
+    if (item.name) {
+    item.name = item._id.name || 'deleted';
+    item.shop = item._id.shop.name || 'deleted';
     item._id = item._id._id;
+    } else {
+      item.name = 'deleted'
+    }
   });
-
+  console.log("hello again 2!");
   res.status(200).json({
     success: true,
     total: result.length,

@@ -5,10 +5,10 @@ const {
   getShop,
   createShop,
   updateShop,
-  deleteShop
+  deleteShop,
 } = require('../controller/shops');
 
-const { getProductsOfShops } = require('../controller/products');
+const { getProductsOfShops, addProduct } = require('../controller/products');
 
 const advancedResults = require('../middleware/advancedResults');
 const Shop = require('../models/Shop');
@@ -30,7 +30,13 @@ router
   .get(advancedResults(Shop, 'products'), getShops)
   .post(protect, authorize('seller', 'admin'), createShop);
 
-router.route('/:shopId/products').get(checkCachedShopProducts,getProductsOfShops);
+router
+  .route('/:shopId/products')
+  .get(checkCachedShopProducts, getProductsOfShops);
+
+router
+  .route('/:shopId/products')
+  .post(protect, authorize('seller', 'admin'), addProduct);
 
 router
   .route('/:id')
