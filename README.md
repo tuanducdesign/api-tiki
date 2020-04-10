@@ -25,9 +25,9 @@
 - Postman docs (99.5% finished): https://documenter.getpostman.com/view/9718206/SzKN2hcs
 
 ## How to run:
-- Clone the project: https://github.com/phuongminh2303/Tiki-Clone-API.git
+- Clone the project: 
 ```sh
-$ git clone 
+$ git clone https://github.com/phuongminh2303/Tiki-Clone-API.git
 ```
 - Install packages:  
 ```sh
