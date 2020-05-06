@@ -6,6 +6,9 @@
 </h3>
 </p>
 
+# Latest update (06/05/2020):
+Due to limited resource problem, I deploy the api to heroku and it runs quite slow and there are no redis cache. But if you still want to try, here is the link: https://tikicloneapi.herokuapp.com/
+
 # Update (29/02/2020):
 - Docker image:
 ``` $ docker pull phuongminh2303/tiki-api ```
