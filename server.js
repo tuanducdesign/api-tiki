@@ -12,6 +12,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const fileupload = require('express-fileupload');
 const path = require('path');
+var favicon = require('serve-favicon');
 
 // Load env variables
 dotenv.config({ path: './config/config.env' });
@@ -39,7 +40,7 @@ app.use(xss());
 // Rate limit 100 requests per 10 mins
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: 100
+  max: 100,
 });
 if (process.env.NODE_ENV === 'production') {
   app.use(limiter);
@@ -55,8 +56,12 @@ app.use(cors());
 app.use(fileupload());
 
 // Set static folder
-// app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(process.env.images_dir));
+// This line is for heroku deployment
+app.use(express.static(path.join(__dirname, 'public')));
+// This line is for SaaS deployment
+// app.use(express.static(process.env.images_dir));
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // Morgan middleware
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : null;
@@ -83,14 +88,14 @@ app.use(errorHandler);
 let serverName;
 if (process.argv[2] === '-name') {
   serverName = process.argv[3];
-} 
+}
 
 app.get('/servername', (req, res) => {
   res.status(200).json({
     success: true,
-    server: serverName
-  })
-})
+    server: serverName,
+  });
+});
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
