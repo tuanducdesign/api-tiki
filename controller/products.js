@@ -6,18 +6,18 @@ const path = require('path');
 const url = require('url');
 const redis = require('redis');
 
-const redis_client = redis.createClient(6379);
+// const redis_client = redis.createClient(6379);
 
 // @desc    Get all products
 // @route   GET /api/v1/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res, next) => {
   const getUrl = url.parse(req.url, true).href;
-  redis_client.setex(
-    `products:${getUrl}`,
-    process.env.CACHE_EXPIRE,
-    JSON.stringify(res.advancedResults)
-  );
+  // redis_client.setex(
+  //   `products:${getUrl}`,
+  //   process.env.CACHE_EXPIRE,
+  //   JSON.stringify(res.advancedResults)
+  // );
   res.status(200).json(res.advancedResults);
 });
 
@@ -28,7 +28,7 @@ const getProductsOfShops = asyncHandler(async (req, res, next) => {
   const { shopId } = req.params;
   const products = await Product.find({ shop: shopId });
 
-  redis_client.setex(`products_shop:${shopId}`, process.env.CACHE_EXPIRE, JSON.stringify(products));
+  // redis_client.setex(`products_shop:${shopId}`, process.env.CACHE_EXPIRE, JSON.stringify(products));
   return res.status(200).json({
     success: true,
     total: products.length,
@@ -51,11 +51,11 @@ const getProduct = asyncHandler(async (req, res, next) => {
     );
   }
 
-  redis_client.setex(
-    `productId:${req.params.id}`,
-    process.env.CACHE_EXPIRE,
-    JSON.stringify(product)
-  );
+  // redis_client.setex(
+  //   `productId:${req.params.id}`,
+  //   process.env.CACHE_EXPIRE,
+  //   JSON.stringify(product)
+  // );
 
   res.status(200).json({
     success: true,

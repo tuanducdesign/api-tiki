@@ -4,7 +4,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const redis = require('redis');
 
-const redis_client = redis.createClient(6379);
+// const redis_client = redis.createClient(6379);
 
 // @desc    Get all reviews
 // @route   GET /api/v1/reviews
@@ -24,11 +24,11 @@ const getProductReviews = asyncHandler(async (req, res, next) => {
     select: 'name'
   });
 
-  redis_client.setex(
-    `reviews_product:${productId}`,
-    3600,
-    JSON.stringify(reviews)
-  );
+  // redis_client.setex(
+  //   `reviews_product:${productId}`,
+  //   3600,
+  //   JSON.stringify(reviews)
+  // );
 
   return res.status(200).json({
     success: true,
