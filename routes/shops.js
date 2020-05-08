@@ -15,7 +15,7 @@ const Shop = require('../models/Shop');
 
 const { protect, authorize } = require('../middleware/auth');
 
-// const { checkCachedShopProducts } = require('../middleware/redisProducts');
+const { checkCachedShopProducts } = require('../middleware/redisProducts');
 
 // Include other resource routers
 const productRouter = require('./products');
@@ -32,7 +32,7 @@ router
 
 router
   .route('/:shopId/products')
-  .get(getProductsOfShops);
+  .get(checkCachedShopProducts, getProductsOfShops);
 
 router
   .route('/:shopId/products')
