@@ -4,8 +4,10 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const redis = require('redis');
 
-const redis_client = redis.createClient(6379);
-
+const redis_client = redis.createClient({
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || 6379
+});
 // @desc    Get all reviews
 // @route   GET /api/v1/reviews
 // @route   GET /api/v1/products/:productId/reviews

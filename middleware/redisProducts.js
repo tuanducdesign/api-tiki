@@ -1,7 +1,10 @@
 const redis = require('redis');
 const url = require('url');
 
-const redis_client = redis.createClient(6379);
+const redis_client = redis.createClient({
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || 6379
+});
 
 const checkCachedShopProducts = (req, res, next) => {
   const { shopId } = req.params;

@@ -6,7 +6,10 @@ const path = require('path');
 const url = require('url');
 const redis = require('redis');
 
-const redis_client = redis.createClient(6379);
+const redis_client = redis.createClient({
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || 6379
+});
 
 // @desc    Get all products
 // @route   GET /api/v1/products
