@@ -36,34 +36,7 @@ $ git clone https://github.com/phuongminh2303/Tiki-Clone-API.git
 ```sh
 $ npm install
 ```
-- Create config.env file to config/:
-```sh
-NODE_ENV = development
-PORT = 3000
 
-MONGO_URL = mongodb+srv://phuongminh:phuongminh@cluster0-b1vsz.mongodb.net/tiki-clone?retryWrites=true&w=majority
-
-MONGO_LOCAL = mongodb://localhost:27017/tikiclone
-
-FILE_UPLOAD_PATH = ./public/uploads
-FILE_UPLOAD_PATH2 = ../testimage/uploads2
-MAX_FILE_UPLOAD = 1000000
-
-JWT_SECRET = phuongdnm_usth_tiki_clone
-JWT_EXPIRE = 7d
-JWT_COOKIE_EXPIRE = 7
-
-CACHE_EXPIRE = 5
-
-SMTP_HOST=smtp.mailtrap.io
-SMTP_PORT=2525
-SMTP_EMAIL=b660b9869bc9ea
-SMTP_PASSWORD=60c601b3551ed8
-FROM_EMAIL=noreply@tiki-clone.io
-FROM_NAME=Tiki-Clone
-
-images_dir = /home/phuong/testimage
-```
 - Run in dev:  
 ```sh
 npm run dev
